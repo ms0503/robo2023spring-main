@@ -5,6 +5,7 @@
 #ifndef MAIN_MOTOR_HH
 #define MAIN_MOTOR_HH
 
+#include "params.hh"
 #include <cstdint>
 #include <map>
 #include <string>
@@ -23,6 +24,14 @@ typedef struct {
 
 /// モーターの最高速度
 constexpr const int32_t MOTOR_SPEED_MAX = 30;
+
+/// モーター
+enum class EnumMotor : uint8_t {
+    FL = ADDR_MOTOR_FL,
+    FR = ADDR_MOTOR_FR,
+    RL = ADDR_MOTOR_RL,
+    RR = ADDR_MOTOR_RR
+};
 
 /// モーターの回転方向
 enum class EnumMotorRotate : int8_t {
