@@ -8,21 +8,21 @@
 #include <map>
 #include <string>
 
-const std::map<std::string, int8_t> Controller::DEAD_ZONES = {
+const std::map<EnumMotor, int8_t> Controller::DEAD_ZONES = {
     {
-        "FL",
+        EnumMotor::FL,
         0
     },
     {
-        "FR",
+        EnumMotor::FR,
         0
     },
     {
-        "RL",
+        EnumMotor::RL,
         0
     },
     {
-        "RR",
+        EnumMotor::RR,
         0
     }
 };
@@ -31,7 +31,7 @@ Controller::Controller() = default;
 
 Controller::~Controller() = default;
 
-MotorState Controller::motor(const int8_t leftX, const int8_t leftY, const int8_t rightX, const int8_t rightY) {
+MotorState Controller::stickToMotor(const int8_t leftX, const int8_t leftY, const int8_t rightX, const int8_t rightY) {
     const StickTheta theta = sticksToTheta(leftX, leftY, rightX, rightY);
     const long double leftR = sqrtl(leftX * leftX + leftY * leftY);
     const long double rightR = sqrtl(rightX * rightX + rightY * rightY);

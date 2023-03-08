@@ -29,11 +29,11 @@ public:
      * @param rightY 右スティック縦方向
      * @return モーター信号
      */
-    static MotorState motor(int8_t leftX, int8_t leftY, int8_t rightX, int8_t rightY);
+    static MotorState stickToMotor(int8_t leftX, int8_t leftY, int8_t rightX, int8_t rightY);
 
 private:
     /// スティックのデッドゾーン
-    static const std::map<std::string, int8_t> DEAD_ZONES;
+    static const std::map<EnumMotor, int8_t> DEAD_ZONES;
 
     /**
      * スティック入力から角度を導出する
