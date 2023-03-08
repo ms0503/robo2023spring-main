@@ -6,7 +6,6 @@
 #include "Motor.hh"
 #include <cmath>
 #include <map>
-#include <string>
 
 const std::map<EnumMotor, int8_t> Controller::DEAD_ZONES = {
     {
@@ -32,14 +31,21 @@ Controller::Controller() = default;
 Controller::~Controller() = default;
 
 MotorState Controller::stickToMotor(const int8_t leftX, const int8_t leftY, const int8_t rightX, const int8_t rightY) {
+    const long double FL = 3. / 8 * M_PI;
+    const long double FR = 1. / 8 * M_PI;
+    const long double RL = 5. / 8 * M_PI;
+    const long double RR = 7. / 8 * M_PI;
     const StickTheta theta = sticksToTheta(leftX, leftY, rightX, rightY);
-    const long double leftR = sqrtl(leftX * leftX + leftY * leftY);
-    const long double rightR = sqrtl(rightX * rightX + rightY * rightY);
+    const long double powerFL = sinl(theta.left + FL) * MOTOR_SPEED_MAX;
+    const long double powerFR = sinl(theta.left + FR) * MOTOR_SPEED_MAX;
+    const long double powerRL = sinl(theta.left + RL) * MOTOR_SPEED_MAX;
+    const long double powerRR = sinl(theta.left + RR) * MOTOR_SPEED_MAX;
+    const long double powerMax = fmaxl(fmaxl(fmaxl(fabsl(powerFL), fabsl(powerFR)), fabsl(powerRL)), fabsl(powerRR));
     return {
-        .FL = static_cast<int32_t>(sinl(theta.left - (M_PI / 8)) * static_cast<int8_t>(EnumMotorRotate::LEFT) * leftR),
-        .FR = static_cast<int32_t>(sinl(theta.left + (M_PI / 8)) * static_cast<int8_t>(EnumMotorRotate::RIGHT) * leftR),
-        .RL = static_cast<int32_t>(sinl(theta.left + (M_PI / 8)) * static_cast<int8_t>(EnumMotorRotate::RIGHT) * leftR),
-        .RR = static_cast<int32_t>(sinl(theta.left - (M_PI / 8)) * static_cast<int8_t>(EnumMotorRotate::LEFT) * leftR)
+        .FL = static_cast<int32_t>(powerFL * powerMax),
+        .FR = static_cast<int32_t>(powerFR * powerMax),
+        .RL = static_cast<int32_t>(powerRL * powerMax),
+        .RR = static_cast<int32_t>(powerRR * powerMax)
     };
 }
 
