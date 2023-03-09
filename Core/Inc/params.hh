@@ -5,6 +5,7 @@
 #ifndef MAIN_PARAMS_HH
 #define MAIN_PARAMS_HH
 
+#include "stm32f407xx.h"
 #include <cstdint>
 
 // Addresses
@@ -13,6 +14,14 @@ constexpr const uint8_t ADDR_MOTOR_FL = 0x10;
 constexpr const uint8_t ADDR_MOTOR_FR = 0x11;
 constexpr const uint8_t ADDR_MOTOR_RL = 0x12;
 constexpr const uint8_t ADDR_MOTOR_RR = 0x13;
+
+// Pins
+constexpr const uint16_t PIN_AIR_CYLINDER_ARM = 0;
+constexpr const uint16_t PIN_AIR_CYLINDER_THROWER = 1;
+
+// GPIO Peripherals
+GPIO_TypeDef *GPIO_AIR_CYLINDER_ARM = GPIOA;
+GPIO_TypeDef *GPIO_AIR_CYLINDER_THROWER = GPIOA;
 
 // Sizes
 constexpr const uint16_t SBDBT_RECEIVE_SIZE = 8;
