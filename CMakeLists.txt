@@ -55,13 +55,13 @@ add_definitions(-DDEBUG -DUSE_HAL_DRIVER -DSTM32F407xx)
 
 file(GLOB_RECURSE SOURCES "Core/*.*" "Drivers/*.*")
 
-set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F407VGTX_FLASH.ld Core/Inc/types.hh Core/Src/Motor.cc Core/Inc/Motor.hh Core/Src/Controller.cc Core/Inc/Controller.hh Core/Src/Thrower.cc Core/Inc/Thrower.hh Core/Src/Arm.cc Core/Inc/Arm.hh)
+set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F407VGTX_FLASH.ld)
 
 add_link_options(-Wl,-gc-sections,--print-memory-usage,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map)
 add_link_options(-mcpu=cortex-m4 -mthumb -mthumb-interwork)
 add_link_options(-T ${LINKER_SCRIPT})
 
-add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT} Core/Inc/types.hh Core/Src/Motor.cc Core/Inc/Motor.hh Core/Src/Controller.cc Core/Inc/Controller.hh Core/Src/Thrower.cc Core/Inc/Thrower.hh Core/Src/Arm.cc Core/Inc/Arm.hh)
+add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT})
 
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
 set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
