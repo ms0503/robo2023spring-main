@@ -29,6 +29,10 @@
 #include "SBDBT.hpp"
 #include "Can.hpp"
 #include "MotorDriver.hpp"
+#include "Arm.hh"
+#include "Controller.hh"
+#include "Motor.hh"
+#include "Thrower.hh"
 #include "params.hh"
 /* USER CODE END Includes */
 
@@ -50,9 +54,11 @@
 
 /* USER CODE BEGIN PV */
 SBDBT sbdbt(huart4);
+SBDBT::AnalogState as;
 SBDBT::ButtonAssignment bs;
 Can can(hcan1);
 MotorDriver md(hcan1, can);
+Motor motors(md);
 uint8_t receiveResult[8] = {0};
 uint8_t sbdbtReceiveData[SBDBT_RECEIVE_SIZE] = {0};
 uint8_t canRXData[6] = {0};
@@ -167,7 +173,17 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+    if(huart != &huart4) return;
+    if(!sbdbt.receiveCheck(sbdbtReceiveData)) return;
+    bs = sbdbt.receiveProcessing();
+    if(bs.L2 == SBDBT::ButtonState::kPush) Arm::close();
+    else if(bs.L2 == SBDBT::ButtonState::kReleaseEdge) Arm::open();
+    if(bs.R2 == SBDBT::ButtonState::kPush) Thrower::reload();
+    else if(bs.R2 == SBDBT::ButtonState::kReleaseEdge) Thrower::dispatch();
+    as = sbdbt.getAnalogState();
+    motors.update(Controller::stickToMotor(as.LX, as.LY, as.RX, as.RY));
+}
 /* USER CODE END 4 */
 
 /**

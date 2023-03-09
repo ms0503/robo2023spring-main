@@ -5,6 +5,7 @@
 #ifndef MAIN_MOTOR_HH
 #define MAIN_MOTOR_HH
 
+#include "MotorDriver.hpp"
 #include "params.hh"
 #include <cstdint>
 #include <map>
@@ -42,8 +43,12 @@ enum class EnumMotorRotate : int8_t {
 /// モーター制御クラス
 class Motor {
 public:
-    Motor();
+    Motor(const MotorDriver& md);
     ~Motor();
+    void update(MotorState state);
+
+private:
+    MotorDriver _md;
 };
 
 #endif //MAIN_MOTOR_HH
