@@ -11,9 +11,9 @@ Thrower::Thrower() = default;
 Thrower::~Thrower() = default;
 
 void Thrower::dispatch() {
-    HAL_GPIO_WritePin(GPIO_AIR_CYLINDER_THROWER, PIN_AIR_CYLINDER_THROWER, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOA, PIN_AIR_CYLINDER_THROWER, GPIO_PIN_SET);
 }
 
 void Thrower::reload() {
-    HAL_GPIO_WritePin(GPIO_AIR_CYLINDER_THROWER, PIN_AIR_CYLINDER_THROWER, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOA, PIN_AIR_CYLINDER_THROWER, GPIO_PIN_RESET);
 }

@@ -19,10 +19,6 @@ constexpr const uint8_t ADDR_MOTOR_RR = 0x13;
 constexpr const uint16_t PIN_AIR_CYLINDER_ARM = 0;
 constexpr const uint16_t PIN_AIR_CYLINDER_THROWER = 1;
 
-// GPIO Peripherals
-GPIO_TypeDef *GPIO_AIR_CYLINDER_ARM = GPIOA;
-GPIO_TypeDef *GPIO_AIR_CYLINDER_THROWER = GPIOA;
-
 // Sizes
 constexpr const uint16_t SBDBT_RECEIVE_SIZE = 8;
 

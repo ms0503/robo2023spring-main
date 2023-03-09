@@ -11,9 +11,9 @@ Arm::Arm() = default;
 Arm::~Arm() = default;
 
 void Arm::close() {
-    HAL_GPIO_WritePin(GPIO_AIR_CYLINDER_ARM, PIN_AIR_CYLINDER_ARM, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOA, PIN_AIR_CYLINDER_ARM, GPIO_PIN_SET);
 }
 
 void Arm::open() {
-    HAL_GPIO_WritePin(GPIO_AIR_CYLINDER_ARM, PIN_AIR_CYLINDER_ARM, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOA, PIN_AIR_CYLINDER_ARM, GPIO_PIN_RESET);
 }
