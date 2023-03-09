@@ -7,6 +7,3 @@
 Motor::Motor() = default;
 
 Motor::~Motor() = default;
-
-void Motor::rotate(const int32_t speed) {
-}
