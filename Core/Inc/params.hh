@@ -23,9 +23,9 @@ constexpr const uint8_t ADDR_MOTOR_RR = 0x13;
 
 // <editor-fold desc="GPIOピン">
 /// 回収機構のピン
-constexpr const uint16_t PIN_AIR_CYLINDER_ARM = 0;
+constexpr const uint16_t PIN_ARM = 0;
 /// 射出機構のピン
-constexpr const uint16_t PIN_AIR_CYLINDER_THROWER = 1;
+constexpr const uint16_t PIN_THROWER = 1;
 // </editor-fold>
 
 // <editor-fold desc="データサイズ">
