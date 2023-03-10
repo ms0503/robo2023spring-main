@@ -23,9 +23,6 @@ typedef struct {
     int32_t RR;
 } MotorState;
 
-/// モーターの最高速度
-constexpr const int32_t MOTOR_SPEED_MAX = 30;
-
 /// モーター
 enum class EnumMotor : uint8_t {
     FL = ADDR_MOTOR_FL,
@@ -43,7 +40,7 @@ enum class EnumMotorRotate : int8_t {
 /// モーター制御クラス
 class Motor {
 public:
-    Motor(const MotorDriver& md);
+    explicit Motor(const MotorDriver &md);
     ~Motor();
     void update(MotorState state);
 
