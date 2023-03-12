@@ -25,15 +25,14 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "stm32f4xx_hal.h"
-#include "SBDBT.hpp"
-#include "Can.hpp"
-#include "MotorDriver.hpp"
 #include "Arm.hh"
 #include "Controller.hh"
 #include "Motor.hh"
 #include "Thrower.hh"
 #include "params.hh"
+#include "stm32f4xx_hal.h"
+
+using namespace LibMecha::v1;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,12 +52,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-SBDBT sbdbt(huart4);
-SBDBT::AnalogState as;
-SBDBT::ButtonAssignment bs;
-Can can(hcan1);
-MotorDriver md(hcan1, can);
-Motor motors(md);
+Controller ctrl(huart4);
+Motor motors(hcan1);
 uint8_t receiveResult[8] = {0};
 uint8_t sbdbtReceiveData[SBDBT_RECEIVE_SIZE] = {0};
 uint8_t canRXData[6] = {0};
@@ -91,9 +86,9 @@ int main(void)
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
-  /* USER CODE BEGIN Init */
+  /* USER CODE BEGIN init */
 
-  /* USER CODE END Init */
+  /* USER CODE END init */
 
   /* Configure the system clock */
   SystemClock_Config();
@@ -108,10 +103,8 @@ int main(void)
   MX_USART1_Init();
   MX_UART4_Init();
   /* USER CODE BEGIN 2 */
-  can.setUp(ADDR_MAIN, CAN_IT_RX_FIFO1_MSG_PENDING);
-  HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
-  md.Init();
-  sbdbt.init();
+  motors.init(ADDR_MAIN);
+  ctrl.init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -174,15 +167,13 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-    if(huart != &huart4) return;
-    if(!sbdbt.receiveCheck(sbdbtReceiveData)) return;
-    bs = sbdbt.receiveProcessing();
-    if(bs.L2 == SBDBT::ButtonState::kPush) Arm::close();
-    else if(bs.L2 == SBDBT::ButtonState::kReleaseEdge) Arm::open();
-    if(bs.R2 == SBDBT::ButtonState::kPush) Thrower::reload();
-    else if(bs.R2 == SBDBT::ButtonState::kReleaseEdge) Thrower::dispatch();
-    as = sbdbt.getAnalogState();
-    motors.update(Controller::stickToMotor(as.LX, as.LY, as.RX, as.RY));
+    ctrl.receiveProcessing(huart, [](const SBDBT::ButtonAssignment &bs) -> void {
+        if(ctrl.isPush(bs.L2)) Arm::close();
+        else if(ctrl.isReleaseEdge(bs.L2)) Arm::open();
+        if(ctrl.isPush(bs.R2)) Thrower::reload();
+        else if(ctrl.isReleaseEdge(bs.R2)) Thrower::dispatch();
+        motors.update(ctrl.stickToMotor());
+    });
 }
 /* USER CODE END 4 */
 
