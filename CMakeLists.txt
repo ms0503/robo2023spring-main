@@ -44,10 +44,16 @@ elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
 elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "MinSizeRel")
     message(STATUS "Maximum optimization for size")
     add_compile_options(-Os)
-else ()
+elseif("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     message(STATUS "Minimal optimization, debug info included")
     add_compile_options(-Og -g)
-endif ()
+endif()
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "MinSizeRel")
+endif()
+
+set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING "")
 
 include_directories(Core/Inc Drivers/STM32F4xx_HAL_Driver/Inc Drivers/STM32F4xx_HAL_Driver/Inc/Legacy Drivers/CMSIS/Device/ST/STM32F4xx/Include Drivers/CMSIS/Include)
 
