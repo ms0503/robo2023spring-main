@@ -5,20 +5,22 @@
 #ifndef MAIN_PARAMS_HH
 #define MAIN_PARAMS_HH
 
+#include "Motor.hh"
 #include "stm32f407xx.h"
 #include <cstdint>
+
+using namespace LibMecha::v1;
 
 // <editor-fold desc="CANアドレス">
 /// メインボードのCANアドレス
 constexpr const uint8_t ADDR_MAIN = 0x00;
-/// 左前方のホイールのCANアドレス
-constexpr const uint8_t ADDR_MOTOR_FL = 0x10;
-/// 右前方のホイールのCANアドレス
-constexpr const uint8_t ADDR_MOTOR_FR = 0x11;
-/// 左後方のホイールのCANアドレス
-constexpr const uint8_t ADDR_MOTOR_RL = 0x12;
-/// 右後方のホイールのCANアドレス
-constexpr const uint8_t ADDR_MOTOR_RR = 0x13;
+/// ホイールのCANアドレス
+constexpr const MotorAddress ADDR_MOTOR = {
+    .FL = 0x10,
+    .FR = 0x11,
+    .RL = 0x12,
+    .RR = 0x13
+};
 // </editor-fold>
 
 // <editor-fold desc="GPIOピン">

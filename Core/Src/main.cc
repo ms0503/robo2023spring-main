@@ -53,7 +53,7 @@ using namespace LibMecha::v1;
 
 /* USER CODE BEGIN PV */
 Controller ctrl(huart4);
-Motor motors(hcan1);
+Motor motors(hcan1, ADDR_MOTOR);
 uint8_t receiveResult[8] = {0};
 uint8_t sbdbtReceiveData[SBDBT_RECEIVE_SIZE] = {0};
 uint8_t canRXData[6] = {0};
