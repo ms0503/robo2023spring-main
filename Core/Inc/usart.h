@@ -32,10 +32,6 @@ extern "C" {
 
 /* USER CODE END Includes */
 
-extern UART_HandleTypeDef huart4;
-
-extern USART_HandleTypeDef husart1;
-
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

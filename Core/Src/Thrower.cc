@@ -4,16 +4,16 @@
 
 #include "Thrower.hh"
 #include "params.hh"
-#include "stm32f4xx_hal.h"
+#include "stm32f4xx_ll_gpio.h"
 
 Thrower::Thrower() = default;
 
 Thrower::~Thrower() = default;
 
 void Thrower::dispatch() {
-    HAL_GPIO_WritePin(GPIOA, PIN_THROWER, GPIO_PIN_SET);
+    LL_GPIO_SetOutputPin(GPIOE, PIN_THROWER);
 }
 
 void Thrower::reload() {
-    HAL_GPIO_WritePin(GPIOA, PIN_THROWER, GPIO_PIN_RESET);
+    LL_GPIO_ResetOutputPin(GPIOE, PIN_THROWER);
 }

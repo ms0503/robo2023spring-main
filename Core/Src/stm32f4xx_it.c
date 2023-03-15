@@ -22,6 +22,8 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdbool.h>
+#include <stdint.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +59,7 @@
 /* External variables --------------------------------------------------------*/
 
 /* USER CODE BEGIN EV */
-
+extern bool sbdbtReceiveComplete;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -197,6 +199,36 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32f4xx.s).                    */
 /******************************************************************************/
+
+/**
+  * @brief This function handles UART4 global interrupt.
+  */
+void UART4_IRQHandler(void)
+{
+  /* USER CODE BEGIN UART4_IRQn 0 */
+  static uint8_t buf[128];
+  static uint8_t count = 0;
+  if(LL_USART_IsActiveFlag_ORE(UART4)) {
+    LL_USART_ReceiveData9(UART4);
+    count = 0;
+  } else if(LL_USART_IsActiveFlag_PE(UART4)) {
+    LL_USART_ReceiveData9(UART4);
+    count = 0;
+  } else if(LL_USART_IsActiveFlag_FE(UART4)) {
+    LL_USART_ReceiveData9(UART4);
+    count = 0;
+  } else if(LL_USART_IsActiveFlag_RXNE(UART4)) {
+    buf[count++] = (uint8_t)LL_USART_ReceiveData9(UART4);
+    if(count == 8) {
+      count = 0;
+      onSBDBTReceived(buf);
+    }
+  }
+  /* USER CODE END UART4_IRQn 0 */
+  /* USER CODE BEGIN UART4_IRQn 1 */
+
+  /* USER CODE END UART4_IRQn 1 */
+}
 
 /* USER CODE BEGIN 1 */
 
