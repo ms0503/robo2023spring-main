@@ -3,17 +3,15 @@
 //
 
 #include "Thrower.hh"
-#include "params.hh"
-#include "stm32f4xx_ll_gpio.h"
 
-Thrower::Thrower() = default;
-
-Thrower::~Thrower() = default;
-
-void Thrower::dispatch() {
-    LL_GPIO_SetOutputPin(GPIOE, PIN_THROWER);
+Thrower::Thrower(Pin pin):
+    LMLL::GPIO(pin, PinMode::OUTPUT) {
 }
 
-void Thrower::reload() {
-    LL_GPIO_ResetOutputPin(GPIOE, PIN_THROWER);
+void Thrower::dispatch() const {
+    high();
+}
+
+void Thrower::reload() const {
+    low();
 }

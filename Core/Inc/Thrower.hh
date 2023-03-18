@@ -5,15 +5,28 @@
 #ifndef MAIN_THROWER_HH
 #define MAIN_THROWER_HH
 
-/// 射出機構クラス
-class Thrower {
+#include "LowLayer/GPIO.hh"
+#include "params.hh"
+
+/// 射出機構
+class Thrower : LMLL::GPIO {
 public:
-    Thrower();
-    ~Thrower();
-    /// 発射
-    static void dispatch();
-    /// リロード
-    static void reload();
+    using LMLL::GPIO::GPIO;
+
+    /**
+     * コンストラクタ
+     * @param pin GPIOピン情報
+     */
+    explicit Thrower(Pin pin);
+
+    /**
+     * 発射
+     */
+    void dispatch() const;
+    /**
+     * リロード
+     */
+    void reload() const;
 };
 
-#endif //MAIN_THROWER_HH
+#endif// MAIN_THROWER_HH

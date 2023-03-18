@@ -3,17 +3,15 @@
 //
 
 #include "Arm.hh"
-#include "params.hh"
-#include "stm32f4xx_ll_gpio.h"
 
-Arm::Arm() = default;
-
-Arm::~Arm() = default;
-
-void Arm::close() {
-    LL_GPIO_SetOutputPin(GPIOE, PIN_ARM);
+Arm::Arm(const Pin pin):
+    LMLL::GPIO(pin, PinMode::OUTPUT) {
 }
 
-void Arm::open() {
-    LL_GPIO_ResetOutputPin(GPIOE, PIN_ARM);
+void Arm::close() const {
+    high();
+}
+
+void Arm::open() const {
+    low();
 }

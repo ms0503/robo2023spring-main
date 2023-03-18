@@ -5,12 +5,28 @@
 #ifndef MAIN_ARM_HH
 #define MAIN_ARM_HH
 
-class Arm {
+#include "LowLayer/GPIO.hh"
+#include "params.hh"
+
+/// 回収用アーム
+class Arm : public LMLL::GPIO {
 public:
-    Arm();
-    ~Arm();
-    static void close();
-    static void open();
+    using LMLL::GPIO::GPIO;
+
+    /**
+     * コンストラクタ
+     * @param pin GPIOピン情報
+     */
+    explicit Arm(Pin pin);
+
+    /**
+     * 掴む
+     */
+    void close() const;
+    /**
+     * 離す
+     */
+    void open() const;
 };
 
-#endif //MAIN_ARM_HH
+#endif// MAIN_ARM_HH

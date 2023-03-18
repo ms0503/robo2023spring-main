@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "Arm.hh"
 #include "Controller.hh"
+#include "LED.hh"
 #include "Motor.hh"
 #include "Thrower.hh"
 #include "params.hh"
@@ -54,8 +55,14 @@ namespace LMLL = LibMecha::v2::LowLayer;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-LM::Controller ctrl(UART4);
+LM::Controller ctrl(USART3);
 LM::Motor motors(hcan1, ADDR_MOTOR);
+Arm arm(PIN_ARM);
+LED led1(PIN_LED_1);
+LED led2(PIN_LED_2);
+LED led3(PIN_LED_3);
+LED led4(PIN_LED_4);
+Thrower thrower(PIN_THROWER);
 bool sbdbtReceiveComplete = false;
 /* USER CODE END PV */
 
@@ -84,9 +91,9 @@ int main(void) {
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();
 
-    /* USER CODE BEGIN init */
+    /* USER CODE BEGIN Init */
 
-    /* USER CODE END init */
+    /* USER CODE END Init */
 
     /* Configure the system clock */
     SystemClock_Config();
@@ -98,10 +105,9 @@ int main(void) {
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     MX_CAN1_Init();
-    MX_USART1_Init();
-    MX_UART4_Init();
+    MX_USART3_UART_Init();
     /* USER CODE BEGIN 2 */
-    LL_USART_EnableIT_RXNE(UART4);
+    LL_USART_EnableIT_RXNE(USART3);
     motors.init(ADDR_MAIN, MOTOR_SPEED_MAX);
     ctrl.init();
     /* USER CODE END 2 */
@@ -112,6 +118,12 @@ int main(void) {
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
+        motors.update({ .FL = 20 });
+        led1.turnOn();
+        LL_mDelay(1000);
+        motors.update({ .FL = 0 });
+        led1.turnOff();
+        LL_mDelay(1000);
     }
     /* USER CODE END 3 */
 }
@@ -155,17 +167,15 @@ void SystemClock_Config(void) {
 
 /* USER CODE BEGIN 4 */
 extern "C" {
-void onSBDBTReceived(uint8_t data[LMLL::SBDBT_RECEIVE_SIZE]) {
-    ctrl.receiveProcessing(reinterpret_cast<unsigned char(&)[LMLL::SBDBT_RECEIVE_SIZE]>(data), [](const LMLL::SBDBT::ButtonAssignment &bs) -> void {
-        if(ctrl.isPush(bs.L2)) Arm::close();
-        else if(ctrl.isReleaseEdge(bs.L2))
-            Arm::open();
-        if(ctrl.isPush(bs.R2)) Thrower::reload();
-        else if(ctrl.isReleaseEdge(bs.R2))
-            Thrower::dispatch();
-        motors.update(ctrl.stickToMotor());
-    });
-}
+    void onSBDBTReceived(uint8_t data[LMLL::SBDBT_RECEIVE_SIZE]) {
+        ctrl.receiveProcessing(reinterpret_cast<unsigned char(&)[LMLL::SBDBT_RECEIVE_SIZE]>(data), [](const LMLL::SBDBT::ButtonAssignment &bs) -> void {
+            if(ctrl.isPush(bs.L2)) arm.close();
+            else if(ctrl.isReleaseEdge(bs.L2)) arm.open();
+            if(ctrl.isPush(bs.R2)) thrower.reload();
+            else if(ctrl.isReleaseEdge(bs.R2)) thrower.dispatch();
+            motors.update(ctrl.stickToMotor());
+        });
+    }
 }
 /* USER CODE END 4 */
 

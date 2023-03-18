@@ -5,4 +5,4 @@
 #ifndef MAIN_TYPES_HH
 #define MAIN_TYPES_HH
 
-#endif //MAIN_TYPES_HH
+#endif// MAIN_TYPES_HH
