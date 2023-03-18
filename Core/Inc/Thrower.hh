@@ -18,7 +18,6 @@ public:
      * @param pin GPIOピン情報
      */
     explicit Thrower(Pin pin);
-
     /**
      * 発射
      */

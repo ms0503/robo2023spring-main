@@ -18,7 +18,6 @@ public:
      * @param pin GPIOピン情報
      */
     explicit Arm(Pin pin);
-
     /**
      * 掴む
      */

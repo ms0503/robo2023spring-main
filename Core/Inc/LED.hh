@@ -18,7 +18,6 @@ public:
      * @param pin GPIOピン情報
      */
     explicit LED(Pin pin);
-
     /**
      * 消灯
      */

@@ -1,4 +1,4 @@
 [submodule "libmecha"]
 	path = libmecha
 	url = https://github.com/ms0503/libmecha.git
-	branch = 6caeb55fbcc01900b1b4b43c7924b45f06163cf3
+	branch = 6e180753624e930db5e24a201d30f750eae108b7
