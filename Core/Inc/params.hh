@@ -48,12 +48,12 @@ const LMLL::GPIO::Pin PIN_LED_4 = {
 /// 回収用アーム
 const LMLL::GPIO::Pin PIN_ARM = {
     .gpio = GPIOE,
-    .pin = LL_GPIO_PIN_2
+    .pin = LL_GPIO_PIN_0
 };
 /// 射出機構
 const LMLL::GPIO::Pin PIN_THROWER = {
     .gpio = GPIOE,
-    .pin = LL_GPIO_PIN_3
+    .pin = LL_GPIO_PIN_1
 };
 // </editor-fold>
 
