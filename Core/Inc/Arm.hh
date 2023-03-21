@@ -28,4 +28,4 @@ public:
     void open() const;
 };
 
-#endif// MAIN_ARM_HH
+#endif // MAIN_ARM_HH

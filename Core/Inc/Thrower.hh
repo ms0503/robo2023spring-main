@@ -9,7 +9,7 @@
 #include "params.hh"
 
 /// 射出機構
-class Thrower : LMLL::GPIO {
+class Thrower : public LMLL::GPIO {
 public:
     using LMLL::GPIO::GPIO;
 
@@ -28,4 +28,4 @@ public:
     void reload() const;
 };
 
-#endif// MAIN_THROWER_HH
+#endif // MAIN_THROWER_HH

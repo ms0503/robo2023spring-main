@@ -9,7 +9,7 @@
 #include "params.hh"
 
 /// GPIO制御のLED
-class LED : LMLL::GPIO {
+class LED : public LMLL::GPIO {
 public:
     using LMLL::GPIO::GPIO;
 
@@ -28,4 +28,4 @@ public:
     void turnOn() const;
 };
 
-#endif// MAIN_LED_HH
+#endif // MAIN_LED_HH

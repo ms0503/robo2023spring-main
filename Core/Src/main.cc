@@ -55,8 +55,12 @@ namespace LMLL = LibMecha::v2::LowLayer;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-LM::Controller ctrl(USART3);
-LM::Motor motors(hcan1, ADDR_MOTOR);
+LMLL::Can can(hcan1);
+LM::Controller ctrl;
+LM::Motor motorFR(hcan1, can, ADDR_MOTOR.FR);
+LM::Motor motorFL(hcan1, can, ADDR_MOTOR.FL);
+LM::Motor motorRL(hcan1, can, ADDR_MOTOR.RL);
+LM::Motor motorRR(hcan1, can, ADDR_MOTOR.RR);
 Arm arm(PIN_ARM);
 LED led1(PIN_LED_1);
 LED led2(PIN_LED_2);
@@ -108,8 +112,11 @@ int main(void) {
     MX_USART3_UART_Init();
     /* USER CODE BEGIN 2 */
     LL_USART_EnableIT_RXNE(USART3);
-    motors.init(ADDR_MAIN, MOTOR_SPEED_MAX);
-    ctrl.init();
+    motorFR.init(ADDR_MAIN, MOTOR_SPEED_MAX);
+    motorFL.init(ADDR_MAIN, MOTOR_SPEED_MAX);
+    motorRL.init(ADDR_MAIN, MOTOR_SPEED_MAX);
+    motorRR.init(ADDR_MAIN, MOTOR_SPEED_MAX);
+    ctrl.init(CTRL_DEAD_ZONES);
     /* USER CODE END 2 */
 
     /* Infinite loop */
@@ -118,12 +125,20 @@ int main(void) {
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
-        motors.update({ .FL = 20 });
+        /*
+        led3.turnOff();
         led1.turnOn();
-        LL_mDelay(1000);
-        motors.update({ .FL = 0 });
+        LL_mDelay(250);
+        led4.turnOff();
+        led2.turnOn();
+        LL_mDelay(250);
         led1.turnOff();
-        LL_mDelay(1000);
+        led3.turnOn();
+        LL_mDelay(250);
+        led2.turnOff();
+        led4.turnOn();
+        LL_mDelay(250);
+         */
     }
     /* USER CODE END 3 */
 }
@@ -166,15 +181,36 @@ void SystemClock_Config(void) {
 }
 
 /* USER CODE BEGIN 4 */
+inline void blink(LMLL::SBDBT::AnalogState sticks) {
+    if(sticks.LX <= -63) led1.turnOn();
+    else led1.turnOff();
+    if(63 <= sticks.LX) led2.turnOn();
+    else led2.turnOff();
+    if(sticks.LY <= -63) led3.turnOn();
+    else led3.turnOff();
+    if(63 <= sticks.LY) led4.turnOn();
+    else led4.turnOff();
+}
+LMLL::MotorDriver md(can, ADDR_MOTOR.RR);
 extern "C" {
-    void onSBDBTReceived(uint8_t data[LMLL::SBDBT_RECEIVE_SIZE]) {
-        ctrl.receiveProcessing(reinterpret_cast<unsigned char(&)[LMLL::SBDBT_RECEIVE_SIZE]>(data), [](const LMLL::SBDBT::ButtonAssignment &bs) -> void {
-            if(ctrl.isPush(bs.L2)) arm.close();
-            else if(ctrl.isReleaseEdge(bs.L2)) arm.open();
-            if(ctrl.isPush(bs.R2)) thrower.reload();
-            else if(ctrl.isReleaseEdge(bs.R2)) thrower.dispatch();
-            motors.update(ctrl.stickToMotor());
-        });
+    void onSBDBTReceived(std::uint8_t data[LMLL::SBDBT_RECEIVE_SIZE]) {
+        const LMLL::SBDBT::ButtonAssignment bs = ctrl.receiveProcessing(data);
+        if(ctrl.isPush(bs.L2)) arm.close();
+        else if(ctrl.isReleaseEdge(bs.L2)) arm.open();
+        if(ctrl.isPush(bs.R2)) thrower.reload();
+        else if(ctrl.isReleaseEdge(bs.R2)) thrower.dispatch();
+        motorFR.update(ctrl.stickToMotor(static_cast<std::uint8_t>(LM::EnumMotor::FR)));
+        motorFL.update(ctrl.stickToMotor(static_cast<std::uint8_t>(LM::EnumMotor::FL)));
+        motorRL.update(ctrl.stickToMotor(static_cast<std::uint8_t>(LM::EnumMotor::RL)));
+        motorRR.update(ctrl.stickToMotor(static_cast<std::uint8_t>(LM::EnumMotor::RR)));
+        const LMLL::SBDBT::AnalogState sticks = ctrl.getStick();
+        blink(sticks);
+        if(ctrl.isPush(bs.L2)) led1.turnOn();
+        if(ctrl.isRelease(bs.L2)) led2.turnOn();
+        led1.turnOff();
+        led2.turnOff();
+        led3.turnOff();
+        led4.turnOff();
     }
 }
 /* USER CODE END 4 */

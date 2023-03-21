@@ -7,6 +7,7 @@
 
 #include "Motor.hh"
 #include "stm32f4xx_ll_gpio.h"
+#include "types.hh"
 #include <cstdint>
 
 namespace LM = LibMecha::v2;
@@ -16,11 +17,11 @@ namespace LMLL = LibMecha::v2::LowLayer;
 /// メインボードのCANアドレス
 constexpr const std::uint8_t ADDR_MAIN = 0x00;
 /// ホイールのCANアドレス
-constexpr const LM::Motor::Address ADDR_MOTOR = {
-    .FL = 0x17,
-    .FR = 0x11,
-    .RL = 0x12,
-    .RR = 0x13
+constexpr const MotorAddress ADDR_MOTOR = {
+    .FR = 0x14,
+    .FL = 0x15,
+    .RL = 0x16,
+    .RR = 0x17
 };
 // </editor-fold>
 
@@ -59,7 +60,24 @@ const LMLL::GPIO::Pin PIN_THROWER = {
 
 // <editor-fold desc="モーターパラメータ">
 /// モーターの最高速度
-constexpr const std::int32_t MOTOR_SPEED_MAX = 30;
+constexpr const std::int32_t MOTOR_SPEED_MAX = 60;
 // </editor-fold>
 
-#endif//MAIN_PARAMS_HH
+// <editor-fold desc="コントローラーパラメータ">
+/// 左スティック横軸のデッドゾーン
+constexpr const std::int32_t CTRL_DEAD_ZONE_LX = 16;
+/// 左スティック縦軸のモーターのデッドゾーン
+constexpr const std::int32_t CTRL_DEAD_ZONE_LY = 16;
+/// 右スティック横軸のモーターのデッドゾーン
+constexpr const std::int32_t CTRL_DEAD_ZONE_RX = 16;
+/// 右スティック縦軸のモーターのデッドゾーン
+constexpr const std::int32_t CTRL_DEAD_ZONE_RY = 16;
+constexpr const std::int32_t CTRL_DEAD_ZONES[4] {
+    CTRL_DEAD_ZONE_LX,
+    CTRL_DEAD_ZONE_LY,
+    CTRL_DEAD_ZONE_RX,
+    CTRL_DEAD_ZONE_RY
+};
+// </editor-fold>
+
+#endif //MAIN_PARAMS_HH
