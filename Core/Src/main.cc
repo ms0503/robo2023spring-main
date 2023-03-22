@@ -67,7 +67,6 @@ LED led2(PIN_LED_2);
 LED led3(PIN_LED_3);
 LED led4(PIN_LED_4);
 Thrower thrower(PIN_THROWER);
-bool sbdbtReceiveComplete = false;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -205,8 +204,6 @@ extern "C" {
         motorRR.update(ctrl.stickToMotor(static_cast<std::uint8_t>(LM::EnumMotor::RR)));
         const LMLL::SBDBT::AnalogState sticks = ctrl.getStick();
         blink(sticks);
-        if(ctrl.isPush(bs.L2)) led1.turnOn();
-        if(ctrl.isRelease(bs.L2)) led2.turnOn();
         led1.turnOff();
         led2.turnOff();
         led3.turnOff();

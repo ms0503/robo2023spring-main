@@ -22,7 +22,6 @@
 #include "main.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdbool.h>
 #include <stdint.h>
 /* USER CODE END Includes */
 
