@@ -14,11 +14,6 @@ public:
     using LMLL::GPIO::GPIO;
 
     /**
-     * コンストラクタ
-     * @param pin GPIOピン情報
-     */
-    explicit Thrower(Pin pin);
-    /**
      * 発射
      */
     void dispatch() const;
@@ -26,6 +21,19 @@ public:
      * リロード
      */
     void reload() const;
+    /**
+     * ロック
+     */
+    void lock() const;
+    /**
+     * ロック解除
+     */
+    void unlock() const;
+
+private:
+    static constexpr const std::size_t LOADER_LEFT_INDEX = 0;
+    static constexpr const std::size_t LOADER_RIGHT_INDEX = 1;
+    static constexpr const std::size_t LOCKER_INDEX = 2;
 };
 
 #endif // MAIN_THROWER_HH

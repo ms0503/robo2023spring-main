@@ -22,14 +22,12 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN 0 */
-
 /* USER CODE END 0 */
 
 /*----------------------------------------------------------------------------*/
 /* Configure GPIO                                                             */
 /*----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
-
 /* USER CODE END 1 */
 
 /** Configure pins
@@ -44,13 +42,13 @@ void MX_GPIO_Init(void) {
     LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOA);
 
     /**/
-    LL_GPIO_ResetOutputPin(GPIOE, LL_GPIO_PIN_2 | LL_GPIO_PIN_3 | LL_GPIO_PIN_0 | LL_GPIO_PIN_1);
+    LL_GPIO_ResetOutputPin(GPIOE, LL_GPIO_PIN_2 | LL_GPIO_PIN_3 | LL_GPIO_PIN_4 | LL_GPIO_PIN_5 | LL_GPIO_PIN_0 | LL_GPIO_PIN_1);
 
     /**/
     LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_13 | LL_GPIO_PIN_14 | LL_GPIO_PIN_15 | LL_GPIO_PIN_12);
 
     /**/
-    GPIO_InitStruct.Pin = LL_GPIO_PIN_2 | LL_GPIO_PIN_3 | LL_GPIO_PIN_0 | LL_GPIO_PIN_1;
+    GPIO_InitStruct.Pin = LL_GPIO_PIN_2 | LL_GPIO_PIN_3 | LL_GPIO_PIN_4 | LL_GPIO_PIN_5 | LL_GPIO_PIN_0 | LL_GPIO_PIN_1;
     GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
     GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
@@ -67,5 +65,4 @@ void MX_GPIO_Init(void) {
 }
 
 /* USER CODE BEGIN 2 */
-
 /* USER CODE END 2 */

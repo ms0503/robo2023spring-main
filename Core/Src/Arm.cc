@@ -4,14 +4,20 @@
 
 #include "Arm.hh"
 
-Arm::Arm(const Pin pin):
-    LMLL::GPIO(pin, PinMode::OUTPUT) {
-}
-
 void Arm::close() const {
-    high();
+    high(HAND_INDEX);
 }
 
 void Arm::open() const {
-    low();
+    low(HAND_INDEX);
+}
+
+void Arm::move() const {
+    high(MOVER_LEFT_INDEX);
+    high(MOVER_RIGHT_INDEX);
+}
+
+void Arm::back() const {
+    low(MOVER_LEFT_INDEX);
+    low(MOVER_RIGHT_INDEX);
 }

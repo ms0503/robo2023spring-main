@@ -32,15 +32,10 @@
 #include "Thrower.hh"
 #include "params.hh"
 #include "stm32f4xx_hal.h"
-#include <array>
-
-namespace LM = LibMecha::v2;
-namespace LMLL = LibMecha::v2::LowLayer;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -49,7 +44,6 @@ namespace LMLL = LibMecha::v2::LowLayer;
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -61,32 +55,26 @@ LM::Motor motorFR(hcan1, can, ADDR_MOTOR.FR);
 LM::Motor motorFL(hcan1, can, ADDR_MOTOR.FL);
 LM::Motor motorRL(hcan1, can, ADDR_MOTOR.RL);
 LM::Motor motorRR(hcan1, can, ADDR_MOTOR.RR);
-Arm arm(PIN_ARM);
-LED led1(PIN_LED_1);
-LED led2(PIN_LED_2);
-LED led3(PIN_LED_3);
-LED led4(PIN_LED_4);
-Thrower thrower(PIN_THROWER);
+Arm arm({ PIN_ARM_HAND, PIN_ARM_MOVER_LEFT, PIN_ARM_MOVER_RIGHT });
+LED led({ PIN_LED_1, PIN_LED_2, PIN_LED_3, PIN_LED_4 });
+Thrower thrower({ PIN_THROWER_LOADER_LEFT, PIN_THROWER_LOADER_RIGHT, PIN_THROWER_LOCKER });
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
+void SystemClock_Config();
 /* USER CODE BEGIN PFP */
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
 /* USER CODE END 0 */
 
 /**
   * @brief  The application entry point.
   * @retval int
   */
-int main(void) {
+int main() {
     /* USER CODE BEGIN 1 */
-
     /* USER CODE END 1 */
 
     /* MCU Configuration--------------------------------------------------------*/
@@ -95,14 +83,12 @@ int main(void) {
     HAL_Init();
 
     /* USER CODE BEGIN Init */
-
     /* USER CODE END Init */
 
     /* Configure the system clock */
     SystemClock_Config();
 
     /* USER CODE BEGIN SysInit */
-
     /* USER CODE END SysInit */
 
     /* Initialize all configured peripherals */
@@ -116,6 +102,10 @@ int main(void) {
     motorRL.init(ADDR_MAIN, MOTOR_SPEED_MAX);
     motorRR.init(ADDR_MAIN, MOTOR_SPEED_MAX);
     ctrl.init(CTRL_DEAD_ZONES);
+    arm.back();
+    arm.open();
+    thrower.lock();
+    thrower.dispatch();
     /* USER CODE END 2 */
 
     /* Infinite loop */
@@ -146,11 +136,13 @@ int main(void) {
   * @brief System Clock Configuration
   * @retval None
   */
-void SystemClock_Config(void) {
+void SystemClock_Config() {
     LL_FLASH_SetLatency(LL_FLASH_LATENCY_5);
     while(LL_FLASH_GetLatency() != LL_FLASH_LATENCY_5) {
     }
     LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
+    while(LL_PWR_IsActiveFlag_VOS() == 0) {
+    }
     LL_RCC_HSI_SetCalibTrimming(16);
     LL_RCC_HSI_Enable();
 
@@ -181,21 +173,25 @@ void SystemClock_Config(void) {
 
 /* USER CODE BEGIN 4 */
 inline void blink(LMLL::SBDBT::AnalogState sticks) {
-    if(sticks.LX <= -63) led1.turnOn();
-    else led1.turnOff();
-    if(63 <= sticks.LX) led2.turnOn();
-    else led2.turnOff();
-    if(sticks.LY <= -63) led3.turnOn();
-    else led3.turnOff();
-    if(63 <= sticks.LY) led4.turnOn();
-    else led4.turnOff();
+    if(sticks.LX <= -63) led.turnOn(0);
+    else led.turnOff(0);
+    if(63 <= sticks.LX) led.turnOn(1);
+    else led.turnOff(1);
+    if(sticks.LY <= -63) led.turnOn(2);
+    else led.turnOff(2);
+    if(63 <= sticks.LY) led.turnOn(3);
+    else led.turnOff(3);
 }
 LMLL::MotorDriver md(can, ADDR_MOTOR.RR);
 extern "C" {
     void onSBDBTReceived(std::uint8_t data[LMLL::SBDBT_RECEIVE_SIZE]) {
         const LMLL::SBDBT::ButtonAssignment bs = ctrl.receiveProcessing(data);
+        if(ctrl.isPush(bs.L1)) arm.move();
+        else if(ctrl.isReleaseEdge(bs.L1)) arm.back();
         if(ctrl.isPush(bs.L2)) arm.close();
         else if(ctrl.isReleaseEdge(bs.L2)) arm.open();
+        if(ctrl.isPush(bs.R1)) thrower.unlock();
+        else if(ctrl.isReleaseEdge(bs.R1)) thrower.lock();
         if(ctrl.isPush(bs.R2)) thrower.reload();
         else if(ctrl.isReleaseEdge(bs.R2)) thrower.dispatch();
         motorFR.update(ctrl.stickToMotor(static_cast<std::uint8_t>(LM::EnumMotor::FR)));
@@ -204,10 +200,10 @@ extern "C" {
         motorRR.update(ctrl.stickToMotor(static_cast<std::uint8_t>(LM::EnumMotor::RR)));
         const LMLL::SBDBT::AnalogState sticks = ctrl.getStick();
         blink(sticks);
-        led1.turnOff();
-        led2.turnOff();
-        led3.turnOff();
-        led4.turnOff();
+        led.turnOff(0);
+        led.turnOff(1);
+        led.turnOff(2);
+        led.turnOff(3);
     }
 }
 /* USER CODE END 4 */
@@ -216,11 +212,11 @@ extern "C" {
   * @brief  This function is executed in case of error occurrence.
   * @retval None
   */
-void Error_Handler(void) {
+void Error_Handler() {
     /* USER CODE BEGIN Error_Handler_Debug */
     /* User can add his own implementation to report the HAL error return state */
     __disable_irq();
-    while(1) {
+    while(true) {
     }
     /* USER CODE END Error_Handler_Debug */
 }

@@ -14,18 +14,13 @@ public:
     using LMLL::GPIO::GPIO;
 
     /**
-     * コンストラクタ
-     * @param pin GPIOピン情報
-     */
-    explicit LED(Pin pin);
-    /**
      * 消灯
      */
-    void turnOff() const;
+    void turnOff(std::size_t index) const;
     /**
      * 点灯
      */
-    void turnOn() const;
+    void turnOn(std::size_t index) const;
 };
 
 #endif // MAIN_LED_HH

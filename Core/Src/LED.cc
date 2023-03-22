@@ -4,14 +4,10 @@
 
 #include "LED.hh"
 
-LED::LED(const Pin pin):
-    LMLL::GPIO(pin, PinMode::OUTPUT) {
+void LED::turnOff(const std::size_t index) const {
+    low(index);
 }
 
-void LED::turnOff() const {
-    low();
-}
-
-void LED::turnOn() const {
-    high();
+void LED::turnOn(const std::size_t index) const {
+    high(index);
 }

@@ -27,22 +27,18 @@ extern "C" {
 
     /* Private includes ----------------------------------------------------------*/
     /* USER CODE BEGIN Includes */
-
     /* USER CODE END Includes */
 
     /* Exported types ------------------------------------------------------------*/
     /* USER CODE BEGIN ET */
-
     /* USER CODE END ET */
 
     /* Exported constants --------------------------------------------------------*/
     /* USER CODE BEGIN EC */
-
     /* USER CODE END EC */
 
     /* Exported macro ------------------------------------------------------------*/
     /* USER CODE BEGIN EM */
-
     /* USER CODE END EM */
 
     /* Exported functions prototypes ---------------------------------------------*/
@@ -57,7 +53,6 @@ extern "C" {
     void SysTick_Handler(void);
     void USART3_IRQHandler(void);
     /* USER CODE BEGIN EFP */
-
     /* USER CODE END EFP */
 
 #ifdef __cplusplus

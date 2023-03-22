@@ -4,14 +4,20 @@
 
 #include "Thrower.hh"
 
-Thrower::Thrower(Pin pin):
-    LMLL::GPIO(pin, PinMode::OUTPUT) {
-}
-
 void Thrower::dispatch() const {
-    high();
+    low(LOADER_LEFT_INDEX);
+    low(LOADER_RIGHT_INDEX);
 }
 
 void Thrower::reload() const {
-    low();
+    high(LOADER_LEFT_INDEX);
+    high(LOADER_RIGHT_INDEX);
+}
+
+void Thrower::lock() const {
+    high(LOCKER_INDEX);
+}
+
+void Thrower::unlock() const {
+    low(LOCKER_INDEX);
 }

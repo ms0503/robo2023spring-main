@@ -21,7 +21,6 @@
 #include "can.h"
 
 /* USER CODE BEGIN 0 */
-
 /* USER CODE END 0 */
 
 CAN_HandleTypeDef hcan1;
@@ -29,11 +28,9 @@ CAN_HandleTypeDef hcan1;
 /* CAN1 init function */
 void MX_CAN1_Init(void) {
     /* USER CODE BEGIN CAN1_Init 0 */
-
     /* USER CODE END CAN1_Init 0 */
 
     /* USER CODE BEGIN CAN1_Init 1 */
-
     /* USER CODE END CAN1_Init 1 */
     hcan1.Instance = CAN1;
     hcan1.Init.Prescaler = 7;
@@ -51,7 +48,6 @@ void MX_CAN1_Init(void) {
         Error_Handler();
     }
     /* USER CODE BEGIN CAN1_Init 2 */
-
     /* USER CODE END CAN1_Init 2 */
 }
 
@@ -59,7 +55,6 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef *canHandle) {
     GPIO_InitTypeDef GPIO_InitStruct = { 0 };
     if(canHandle->Instance == CAN1) {
         /* USER CODE BEGIN CAN1_MspInit 0 */
-
         /* USER CODE END CAN1_MspInit 0 */
         /* CAN1 clock enable */
         __HAL_RCC_CAN1_CLK_ENABLE();
@@ -77,7 +72,6 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef *canHandle) {
         HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
         /* USER CODE BEGIN CAN1_MspInit 1 */
-
         /* USER CODE END CAN1_MspInit 1 */
     }
 }
@@ -85,7 +79,6 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef *canHandle) {
 void HAL_CAN_MspDeInit(CAN_HandleTypeDef *canHandle) {
     if(canHandle->Instance == CAN1) {
         /* USER CODE BEGIN CAN1_MspDeInit 0 */
-
         /* USER CODE END CAN1_MspDeInit 0 */
         /* Peripheral clock disable */
         __HAL_RCC_CAN1_CLK_DISABLE();
@@ -97,11 +90,9 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef *canHandle) {
         HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11 | GPIO_PIN_12);
 
         /* USER CODE BEGIN CAN1_MspDeInit 1 */
-
         /* USER CODE END CAN1_MspDeInit 1 */
     }
 }
 
 /* USER CODE BEGIN 1 */
-
 /* USER CODE END 1 */

@@ -21,14 +21,12 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-
 /* USER CODE END 0 */
 
 /* USART3 init function */
 
 void MX_USART3_UART_Init(void) {
     /* USER CODE BEGIN USART3_Init 0 */
-
     /* USER CODE END USART3_Init 0 */
 
     LL_USART_InitTypeDef USART_InitStruct = { 0 };
@@ -56,7 +54,6 @@ void MX_USART3_UART_Init(void) {
     NVIC_EnableIRQ(USART3_IRQn);
 
     /* USER CODE BEGIN USART3_Init 1 */
-
     /* USER CODE END USART3_Init 1 */
     USART_InitStruct.BaudRate = 9600;
     USART_InitStruct.DataWidth = LL_USART_DATAWIDTH_8B;
@@ -69,10 +66,8 @@ void MX_USART3_UART_Init(void) {
     LL_USART_ConfigAsyncMode(USART3);
     LL_USART_Enable(USART3);
     /* USER CODE BEGIN USART3_Init 2 */
-
     /* USER CODE END USART3_Init 2 */
 }
 
 /* USER CODE BEGIN 1 */
-
 /* USER CODE END 1 */
