@@ -50,7 +50,7 @@
 
 /* USER CODE BEGIN PV */
 LMLL::Can can(hcan1);
-LM::Controller ctrl;
+LM::Controller ctrl(LM::Controller::MotorControlType::VECTOR);
 LM::Motor motorFR(hcan1, can, ADDR_MOTOR.FR);
 LM::Motor motorFL(hcan1, can, ADDR_MOTOR.FL);
 LM::Motor motorRL(hcan1, can, ADDR_MOTOR.RL);
