@@ -4,20 +4,9 @@
 
 #include "Arm.hh"
 
-void Arm::close() const {
-    high(HAND_INDEX);
-}
-
-void Arm::open() const {
-    low(HAND_INDEX);
-}
-
-void Arm::move() const {
-    high(MOVER_LEFT_INDEX);
-    high(MOVER_RIGHT_INDEX);
-}
-
-void Arm::back() const {
-    low(MOVER_LEFT_INDEX);
-    low(MOVER_RIGHT_INDEX);
+Arm::Arm(const std::vector<Pin> &pin):
+    GPIO(pin) {
+    _state.at(HAND_INDEX) = PinState::LOW;
+    _state.at(MOVER_LEFT_INDEX) = PinState::LOW;
+    _state.at(MOVER_RIGHT_INDEX) = PinState::LOW;
 }

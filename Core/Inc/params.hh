@@ -76,20 +76,20 @@ const LMLL::GPIO::Pin PIN_ARM_MOVER_RIGHT = {
     .pin = LL_GPIO_PIN_2,
     .mode = LMLL::GPIO::PinMode::OUTPUT
 };
-/// 射出機構 - ローダー左
-const LMLL::GPIO::Pin PIN_THROWER_LOADER_LEFT = {
+/// 射出機構 - ロック機構
+const LMLL::GPIO::Pin PIN_THROWER_LOCKER = {
     .gpio = GPIOE,
     .pin = LL_GPIO_PIN_3,
     .mode = LMLL::GPIO::PinMode::OUTPUT
 };
-/// 射出機構 - ローダー右
-const LMLL::GPIO::Pin PIN_THROWER_LOADER_RIGHT = {
+/// 射出機構 - ローダー左
+const LMLL::GPIO::Pin PIN_THROWER_LOADER_LEFT = {
     .gpio = GPIOE,
     .pin = LL_GPIO_PIN_4,
     .mode = LMLL::GPIO::PinMode::OUTPUT
 };
-/// 射出機構 - ロック機構
-const LMLL::GPIO::Pin PIN_THROWER_LOCKER = {
+/// 射出機構 - ローダー右
+const LMLL::GPIO::Pin PIN_THROWER_LOADER_RIGHT = {
     .gpio = GPIOE,
     .pin = LL_GPIO_PIN_5,
     .mode = LMLL::GPIO::PinMode::OUTPUT
@@ -98,7 +98,7 @@ const LMLL::GPIO::Pin PIN_THROWER_LOCKER = {
 
 // <editor-fold desc="モーターパラメータ">
 /// モーターの最高速度
-constexpr const std::int32_t MOTOR_SPEED_MAX = 6000;
+constexpr const std::int32_t MOTOR_SPEED_MAX = 60;
 // </editor-fold>
 
 // <editor-fold desc="コントローラーパラメータ">

@@ -11,24 +11,36 @@
 /// 回収用アーム
 class Arm : public LMLL::GPIO {
 public:
-    using LMLL::GPIO::GPIO;
+    using GPIO::GPIO;
+
+    explicit Arm(const std::vector<Pin> &pin);
 
     /**
      * 掴む
      */
-    void close() const;
+    inline void close() {
+        if(_state.at(HAND_INDEX) == PinState::LOW) toggle(HAND_INDEX);
+    }
     /**
      * 離す
      */
-    void open() const;
+    inline void open() {
+        if(_state.at(HAND_INDEX) == PinState::HIGH) toggle(HAND_INDEX);
+    }
     /**
      * 射出機構へ移動する
      */
-    void move() const;
+    inline void move() {
+        high(MOVER_LEFT_INDEX);
+        high(MOVER_RIGHT_INDEX);
+    }
     /**
      * 元に戻る
      */
-    void back() const;
+    inline void back() {
+        low(MOVER_LEFT_INDEX);
+        low(MOVER_RIGHT_INDEX);
+    }
 
 private:
     static constexpr const std::size_t HAND_INDEX = 0;

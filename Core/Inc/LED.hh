@@ -11,16 +11,22 @@
 /// GPIO制御のLED
 class LED : public LMLL::GPIO {
 public:
-    using LMLL::GPIO::GPIO;
+    using GPIO::GPIO;
+
+    explicit LED(Pin pin);
 
     /**
      * 消灯
      */
-    void turnOff(std::size_t index) const;
+    inline void turnOff() {
+        low(0);
+    }
     /**
      * 点灯
      */
-    void turnOn(std::size_t index) const;
+    inline void turnOn() {
+        high(0);
+    }
 };
 
 #endif // MAIN_LED_HH

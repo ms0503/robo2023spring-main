@@ -4,20 +4,9 @@
 
 #include "Thrower.hh"
 
-void Thrower::dispatch() const {
-    low(LOADER_LEFT_INDEX);
-    low(LOADER_RIGHT_INDEX);
-}
-
-void Thrower::reload() const {
-    high(LOADER_LEFT_INDEX);
-    high(LOADER_RIGHT_INDEX);
-}
-
-void Thrower::lock() const {
-    high(LOCKER_INDEX);
-}
-
-void Thrower::unlock() const {
-    low(LOCKER_INDEX);
+Thrower::Thrower(const std::vector<Pin> &pin):
+    GPIO(pin) {
+    _state.at(LOADER_LEFT_INDEX) = PinState::LOW;
+    _state.at(LOADER_RIGHT_INDEX) = PinState::LOW;
+    _state.at(LOCKER_INDEX) = PinState::HIGH;
 }

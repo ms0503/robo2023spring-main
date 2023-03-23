@@ -4,10 +4,7 @@
 
 #include "LED.hh"
 
-void LED::turnOff(const std::size_t index) const {
-    low(index);
-}
-
-void LED::turnOn(const std::size_t index) const {
-    high(index);
+LED::LED(const Pin pin):
+    GPIO({ pin }) {
+    _state.at(0) = PinState::LOW;
 }

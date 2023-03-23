@@ -11,24 +11,36 @@
 /// 射出機構
 class Thrower : public LMLL::GPIO {
 public:
-    using LMLL::GPIO::GPIO;
+    using GPIO::GPIO;
+
+    explicit Thrower(const std::vector<Pin> &pin);
 
     /**
      * 発射
      */
-    void dispatch() const;
+    inline void dispatch() {
+        low(LOADER_LEFT_INDEX);
+        low(LOADER_RIGHT_INDEX);
+    }
     /**
      * リロード
      */
-    void reload() const;
+    inline void reload() {
+        high(LOADER_LEFT_INDEX);
+        high(LOADER_RIGHT_INDEX);
+    }
     /**
      * ロック
      */
-    void lock() const;
+    inline void lock() {
+        if(_state.at(LOCKER_INDEX) == PinState::LOW) toggle(LOCKER_INDEX);
+    }
     /**
      * ロック解除
      */
-    void unlock() const;
+    inline void unlock() {
+        if(_state.at(LOCKER_INDEX) == PinState::HIGH) toggle(LOCKER_INDEX);
+    }
 
 private:
     static constexpr const std::size_t LOADER_LEFT_INDEX = 0;
