@@ -6,7 +6,10 @@
 
 Thrower::Thrower(const std::vector<Pin> &pin):
     GPIO(pin) {
-    _state.at(LOADER_LEFT_INDEX) = PinState::LOW;
-    _state.at(LOADER_RIGHT_INDEX) = PinState::LOW;
-    _state.at(LOCKER_INDEX) = PinState::HIGH;
+    //_state.at(LOADER_LEFT_INDEX) = PinState::LOW;
+    //_state.at(LOADER_RIGHT_INDEX) = PinState::LOW;
+    //_state.at(LOCKER_INDEX) = PinState::LOW;
+    _state.assign({ PinState::LOW,
+                    PinState::LOW,
+                    PinState::LOW });
 }

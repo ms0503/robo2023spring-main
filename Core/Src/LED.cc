@@ -6,5 +6,6 @@
 
 LED::LED(const Pin pin):
     GPIO({ pin }) {
-    _state.at(0) = PinState::LOW;
+    //_state.at(0) = PinState::LOW;
+    _state.assign({ PinState::LOW });
 }

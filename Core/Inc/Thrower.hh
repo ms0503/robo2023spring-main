@@ -33,13 +33,13 @@ public:
      * ロック
      */
     inline void lock() {
-        if(_state.at(LOCKER_INDEX) == PinState::LOW) toggle(LOCKER_INDEX);
+        high(LOCKER_INDEX);
     }
     /**
      * ロック解除
      */
     inline void unlock() {
-        if(_state.at(LOCKER_INDEX) == PinState::HIGH) toggle(LOCKER_INDEX);
+        low(LOCKER_INDEX);
     }
 
 private:

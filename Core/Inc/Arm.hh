@@ -19,13 +19,13 @@ public:
      * 掴む
      */
     inline void close() {
-        if(_state.at(HAND_INDEX) == PinState::LOW) toggle(HAND_INDEX);
+        high(HAND_INDEX);
     }
     /**
      * 離す
      */
     inline void open() {
-        if(_state.at(HAND_INDEX) == PinState::HIGH) toggle(HAND_INDEX);
+        low(HAND_INDEX);
     }
     /**
      * 射出機構へ移動する

@@ -103,13 +103,13 @@ constexpr const std::int32_t MOTOR_SPEED_MAX = 60;
 
 // <editor-fold desc="コントローラーパラメータ">
 /// 左スティック横軸のデッドゾーン
-constexpr const std::int32_t CTRL_DEAD_ZONE_LX = 16;
+constexpr const std::int32_t CTRL_DEAD_ZONE_LX = 24;
 /// 左スティック縦軸のモーターのデッドゾーン
-constexpr const std::int32_t CTRL_DEAD_ZONE_LY = 16;
+constexpr const std::int32_t CTRL_DEAD_ZONE_LY = 24;
 /// 右スティック横軸のモーターのデッドゾーン
-constexpr const std::int32_t CTRL_DEAD_ZONE_RX = 16;
+constexpr const std::int32_t CTRL_DEAD_ZONE_RX = 24;
 /// 右スティック縦軸のモーターのデッドゾーン
-constexpr const std::int32_t CTRL_DEAD_ZONE_RY = 16;
+constexpr const std::int32_t CTRL_DEAD_ZONE_RY = 24;
 constexpr const std::array<std::int32_t, 4> CTRL_DEAD_ZONES {
     CTRL_DEAD_ZONE_LX,
     CTRL_DEAD_ZONE_LY,
